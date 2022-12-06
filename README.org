@@ -1,0 +1,3 @@
+* Odin Project Tic Tac Toe
+Gonna put a bit of a spin on this one in terms of the game. I'll include a normal mode and mega mode where you play 9 simultaneous games of tic tac toe and winning one of them will overlay the 'won' game with a large X or O and some transparency. In Mega Mode you'll get 3 moves that must be played on 3 different boards and you may not play on any board you played on the previous turn.
+
