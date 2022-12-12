@@ -202,6 +202,7 @@ let GameBoard = (function () {
 
   gameBoard.reset = function () {
     _init();
+    console.log("Game has been reset");
   };
 
   return gameBoard;
@@ -213,6 +214,8 @@ let cells = document.getElementsByClassName("cell");
 Array.from(cells).forEach((cell) => {
   cell.addEventListener("click", printCell);
 });
+let newGameBtn = document.getElementById("new-game");
+newGameBtn.addEventListener("click", resetGame);
 
 function printCell(e) {
   console.log(e.target.id[5]);
@@ -220,4 +223,15 @@ function printCell(e) {
   GameBoard.takeTurn("X", e.target.id[5]);
   let targetCell = Array.from(cells)[e.target.id[5] - 1];
   targetCell.appendChild(document.createTextNode("X"));
+  targetCell.removeEventListener("click", printCell);
+}
+
+function resetGame() {
+  GameBoard.reset;
+  Array.from(cells).forEach((cell) => {
+    if (cell.childNodes[0] != undefined) {
+      cell.removeChild(cell.childNodes[0]);
+      cell.addEventListener("click", printCell);
+    }
+  });
 }
