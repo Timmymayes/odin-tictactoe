@@ -11,6 +11,14 @@ let GameBoard = (function () {
   let _O = "O";
 
   //functions
+  let _init = function () {
+    _board = [
+      ["_", "_", "_"],
+      ["_", "_", "_"],
+      ["_", "_", "_"],
+    ];
+  };
+
   let _cellIsValid = function (row, col) {
     if (row > 2 || row < 0 || col > 2 || col < 0) {
       console.log("The space you provided is not on the board");
@@ -155,8 +163,31 @@ let GameBoard = (function () {
     }
   };
 
-  gameBoard.takeTurn = function (piece, row, col) {
+  let _convertIDtoRowCol = function (num) {
+    let result = [];
+    // num % 3
+    // 0(0) 1(1) 2(2)
+    // 3(0) 4(1) 5(2)
+    // 6(0) 7(1) 8(2)
+    if (num < 3) {
+      result[0] = 0;
+    } else if (num < 6) {
+      result[0] = 1;
+    } else if (num < 9) {
+      result[0] = 2;
+    } else {
+      console.log("Error, position out of bounds");
+    }
+    result[1] = num % 3;
+
+    return result;
+  };
+
+  gameBoard.takeTurn = function (piece, pos) {
     piece = piece.toUpperCase();
+    let coordinate = _convertIDtoRowCol(pos - 1);
+    let row = coordinate[0];
+    let col = coordinate[1];
     if (_isValidPiece(piece) && _cellIsValid(row, col)) {
       _addPiece(piece, row, col);
       console.log("Your piece " + piece + " was added at " + row + ":" + col);
@@ -169,5 +200,24 @@ let GameBoard = (function () {
     }
   };
 
+  gameBoard.reset = function () {
+    _init();
+  };
+
   return gameBoard;
 })();
+
+let content = document.getElementById("content");
+let gameboard = document.getElementById("gameboard");
+let cells = document.getElementsByClassName("cell");
+Array.from(cells).forEach((cell) => {
+  cell.addEventListener("click", printCell);
+});
+
+function printCell(e) {
+  console.log(e.target.id[5]);
+
+  GameBoard.takeTurn("X", e.target.id[5]);
+  let targetCell = Array.from(cells)[e.target.id[5] - 1];
+  targetCell.appendChild(document.createTextNode("X"));
+}
