@@ -61,14 +61,14 @@ let GameBoard = (function () {
       result.cols[2] += str[2];
     });
 
-    result.diags[0] =
-      result.rows[0][0] + result.rows[1][1] + result.rows[(2, 2)];
+    result.diags[0] = result.rows[0][0] + result.rows[1][1] + result.rows[2][2];
     result.diags[1] = result.rows[0][2] + result.rows[1][1] + result.rows[2][0];
 
     return result;
   };
 
   let _setIsMatched = function (setToCheck) {
+    console.log("Set to check: " + setToCheck);
     if (setToCheck === "XXX" || setToCheck === "OOO") {
       return true;
     }
@@ -86,31 +86,28 @@ let GameBoard = (function () {
     let colID = 0;
     let diagID = 0;
     // fix here
-    while (rowID <= _curPaths.rows.length) {
+    while (rowID < _curPaths.rows.length) {
       if (_setIsMatched(_curPaths.rows[rowID])) {
         match.matchFound = true;
-        match.piece = _curPaths.row[rowID][0];
-        console.log("Match Found in a row:" + rowID);
+        console.log("match found in a row: " + rowID);
         return match;
       }
       rowID++;
       match.location++;
     }
 
-    while (colID <= _curPaths.cols.length) {
+    while (colID < _curPaths.cols.length) {
       if (_setIsMatched(_curPaths.cols[colID])) {
         match.matchFound = true;
-        match.piece = _curPaths.cols[colID][0];
         console.log("Match Found in a col:" + colID);
         return match;
       }
       colID++;
       match.location++;
     }
-    while (diagID <= _curPaths.diags.length) {
+    while (diagID < _curPaths.diags.length) {
       if (_setIsMatched(_curPaths.diags[diagID])) {
         match.matchFound = true;
-        match.piece = _curPaths.diags[diagID][0];
         console.log("Match Found in a diag:" + diagID);
         return match;
       }
@@ -123,8 +120,8 @@ let GameBoard = (function () {
   let _isGameOver = function () {
     let result = _checkBoard();
     if (result.matchFound) {
-      console.log(result.piece + " has won the game!");
-      console.log("The location of the match is " + match.location);
+      console.log("The location of the match is " + result.location);
+      return true;
     } else {
       console.log("No Match Found\n" + result);
     }
@@ -132,6 +129,7 @@ let GameBoard = (function () {
     if (_isBoardFull()) {
       console.log("The game has ended in a draw!");
     }
+    return false;
   };
 
   gameBoard.printBoard = function () {
@@ -147,7 +145,6 @@ let GameBoard = (function () {
   };
 
   let _isValidPiece = function (string) {
-    string = string.toUpperCase();
     if (string === _X || string === _O) {
       return true;
     } else {
@@ -159,6 +156,7 @@ let GameBoard = (function () {
   };
 
   gameBoard.takeTurn = function (piece, row, col) {
+    piece = piece.toUpperCase();
     if (_isValidPiece(piece) && _cellIsValid(row, col)) {
       _addPiece(piece, row, col);
       console.log("Your piece " + piece + " was added at " + row + ":" + col);
@@ -166,7 +164,9 @@ let GameBoard = (function () {
       console.log("Turn not completed");
     }
     gameBoard.printBoard();
-    _isGameOver();
+    if (_isGameOver()) {
+      console.log("The winner is " + piece);
+    }
   };
 
   return gameBoard;
