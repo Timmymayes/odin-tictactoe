@@ -152,6 +152,14 @@ let GameBoard = (function () {
     );
   };
 
+  gameBoard.isGameOver = function () {
+    if (_isGameOver()) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   let _isValidPiece = function (string) {
     if (string === _X || string === _O) {
       return true;
