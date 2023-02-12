@@ -215,7 +215,7 @@ let GameBoard = (function () {
 
   return gameBoard;
 })();
-
+let currentPlayer = "X";
 let content = document.getElementById("content");
 let gameboard = document.getElementById("gameboard");
 let cells = document.getElementsByClassName("cell");
@@ -227,19 +227,42 @@ newGameBtn.addEventListener("click", resetGame);
 
 function printCell(e) {
   console.log(e.target.id[5]);
-
-  GameBoard.takeTurn("X", e.target.id[5]);
+  GameBoard.takeTurn(currentPlayer, e.target.id[5]);
   let targetCell = Array.from(cells)[e.target.id[5] - 1];
-  targetCell.appendChild(document.createTextNode("X"));
+  targetCell.appendChild(document.createTextNode(currentPlayer));
   targetCell.removeEventListener("click", printCell);
+
+  if (GameBoard.isGameOver()) {
+    let winMsgDiv = document.createElement("div");
+    winMsgDiv.id = "WinMsg";
+    winMsgDiv.appendChild(document.createTextNode(currentPlayer + " Wins!"));
+    content.appendChild(winMsgDiv);
+    Array.from(cells).forEach((cell) => {
+      cell.removeEventListener("click", printCell);
+    });
+  }
+
+  currentPlayer = togglePlayer(currentPlayer);
+}
+
+function togglePlayer(str) {
+  if (str === "X") {
+    return "O";
+  } else {
+    return "X";
+  }
 }
 
 function resetGame() {
-  GameBoard.reset;
+  GameBoard.reset();
   Array.from(cells).forEach((cell) => {
     if (cell.childNodes[0] != undefined) {
       cell.removeChild(cell.childNodes[0]);
-      cell.addEventListener("click", printCell);
     }
+    cell.addEventListener("click", printCell);
   });
+  currentPlayer = "X";
+  if (content.childElementCount > 1) {
+    content.removeChild(WinMsg);
+  }
 }

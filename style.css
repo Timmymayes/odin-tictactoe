@@ -50,6 +50,7 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-flow: column;
     width: 100nw;
     height: 60vh;
 
@@ -74,6 +75,12 @@ html {
     align-items: center;
 
 
+}
+
+#WinMsg {
+    padding: 25px;
+    font-size: 25pt;
+    font-weight: 800;
 }
 
 #cell-1,#cell-2,#cell-3, #cell-4, #cell-5, #cell-6 {
