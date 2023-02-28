@@ -215,6 +215,10 @@ let GameBoard = (function () {
 
   return gameBoard;
 })();
+
+let playerX = "";
+let playerO = "";
+let players = [];
 let currentPlayer = "X";
 let content = document.getElementById("content");
 let gameboard = document.getElementById("gameboard");
@@ -265,4 +269,9 @@ function resetGame() {
   if (content.childElementCount > 1) {
     content.removeChild(WinMsg);
   }
+}
+
+function player(playerName, playerPiece) {
+  this.name = playerName;
+  this.piece = playerPiece;
 }
