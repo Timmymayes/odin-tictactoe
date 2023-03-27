@@ -24,6 +24,7 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 50px;
 
 }
 
@@ -54,6 +55,21 @@ html {
     width: 100nw;
     height: 60vh;
 
+}
+
+#players {
+    display: flex;
+    width: 60%;
+    justify-content: space-between;
+
+}
+
+#players h2 {
+    font-size: 40pt;
+}
+
+#players h3 {
+    font-size: 25pt;
 }
 
 #gameboard {

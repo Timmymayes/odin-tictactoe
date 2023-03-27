@@ -223,9 +223,11 @@ let currentPlayer = "X";
 let content = document.getElementById("content");
 let gameboard = document.getElementById("gameboard");
 let cells = document.getElementsByClassName("cell");
+
 Array.from(cells).forEach((cell) => {
   cell.addEventListener("click", printCell);
 });
+
 let newGameBtn = document.getElementById("new-game");
 newGameBtn.addEventListener("click", resetGame);
 
