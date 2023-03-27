@@ -11,8 +11,8 @@
 	<div id="content">
 	    <div id="players">
 		<div>
-		    <h2>Player One</h2>
-		    <h3 id="player-one">Tyler</h3>
+		    <h2>Player 1 - X</h2>
+		    <h3 id="player-one"></h3>
 		</div>
 	    <div id="gameboard">
 		<div id="cell-1" class="cell"></div>
@@ -26,8 +26,8 @@
 		<div id="cell-9" class="cell"></div>
 	    </div>		
 		<div>
-		    <h2>Player Two</h2>
-		    <h3 id="player-two">Timothy</h3>
+		    <h2>Player 2 - O</h2>
+		    <h3 id="player-two"></h3>
 		</div>
 	    </div>
 
@@ -36,5 +36,29 @@
 	<div id="footer">
 	    <button id="new-game">New Game</button>
 	</div>
+	<!-- Modal for creating new game -->
+	<div id ="modal-newgame" class="modal">
+	    <div class="modal-form">
+		<div class="form-header">
+		    <h2>Create a New Game</h2>
+		    <span class="close">
+			&times;
+		    </span>
+		</div>
+		<form id="form">
+		    <div class="form">
+			<div class="row">
+			    <label for="player-one">Player One</label>
+			    <input id="player-one" name="player_one_name" type="text" value=""/>
+			</div>
+			<div class="row">
+			    <label for="player-two">Player Two</label>
+			    <input id="player-two" name="player_two_name" type="text" value=""/>
+			</div>
+		    </div>
+		    <button type="submit" id="submit">Submit</button>
+		</form>
+
+		
     </body>
 </html>

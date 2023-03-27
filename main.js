@@ -192,7 +192,6 @@ let GameBoard = (function () {
   };
 
   gameBoard.takeTurn = function (piece, pos) {
-    piece = piece.toUpperCase();
     let coordinate = _convertIDtoRowCol(pos - 1);
     let row = coordinate[0];
     let col = coordinate[1];
@@ -219,10 +218,16 @@ let GameBoard = (function () {
 let playerX = "";
 let playerO = "";
 let players = [];
-let currentPlayer = "X";
+let currentPlayer;
 let content = document.getElementById("content");
 let gameboard = document.getElementById("gameboard");
 let cells = document.getElementsByClassName("cell");
+// modal to create a new game
+var modal = document.getElementById("modal-newgame");
+var span = document.getElementsByClassName("close")[0];
+let form = document.getElementById("form");
+let playerOneLabel = document.getElementById("player-one");
+let playerTwoLabel = document.getElementById("player-two");
 
 Array.from(cells).forEach((cell) => {
   cell.addEventListener("click", printCell);
@@ -231,31 +236,38 @@ Array.from(cells).forEach((cell) => {
 let newGameBtn = document.getElementById("new-game");
 newGameBtn.addEventListener("click", resetGame);
 
+// helper functions
+
 function printCell(e) {
-  console.log(e.target.id[5]);
-  GameBoard.takeTurn(currentPlayer, e.target.id[5]);
+  if (currentPlayer === undefined) {
+    alert("No players! Click New Game Button.");
+    return;
+  }
+  GameBoard.takeTurn(currentPlayer.piece, e.target.id[5]);
   let targetCell = Array.from(cells)[e.target.id[5] - 1];
-  targetCell.appendChild(document.createTextNode(currentPlayer));
+  targetCell.appendChild(document.createTextNode(currentPlayer.piece));
   targetCell.removeEventListener("click", printCell);
 
   if (GameBoard.isGameOver()) {
     let winMsgDiv = document.createElement("div");
     winMsgDiv.id = "WinMsg";
-    winMsgDiv.appendChild(document.createTextNode(currentPlayer + " Wins!"));
+    winMsgDiv.appendChild(
+      document.createTextNode(currentPlayer.name + " Wins!")
+    );
     content.appendChild(winMsgDiv);
     Array.from(cells).forEach((cell) => {
       cell.removeEventListener("click", printCell);
     });
   }
 
-  currentPlayer = togglePlayer(currentPlayer);
+  togglePlayer();
 }
 
-function togglePlayer(str) {
-  if (str === "X") {
-    return "O";
+function togglePlayer() {
+  if (currentPlayer === players[0]) {
+    currentPlayer = players[1];
   } else {
-    return "X";
+    currentPlayer = players[0];
   }
 }
 
@@ -267,13 +279,45 @@ function resetGame() {
     }
     cell.addEventListener("click", printCell);
   });
-  currentPlayer = "X";
+  modal.style.display = "block";
   if (content.childElementCount > 1) {
     content.removeChild(WinMsg);
   }
 }
 
+span.onclick = function () {
+  modal.style.display = "none";
+};
+
+window.onclick = function (event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+};
+
 function player(playerName, playerPiece) {
   this.name = playerName;
   this.piece = playerPiece;
 }
+
+function updatePlayerNames() {
+  playerOneLabel.textContent = players[0].name;
+  playerTwoLabel.textContent = players[1].name;
+}
+
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+  let playerData = [];
+  const submittedData = new FormData(form);
+  for (const [key, value] of submittedData) {
+    playerData.push(value);
+  }
+  let playerOne = new player((playerName = playerData[0]), (playerPiece = "X"));
+  let playerTwo = new player((playerName = playerData[1]), (playerPiece = "O"));
+  players = [];
+  players.push(playerOne);
+  players.push(playerTwo);
+  updatePlayerNames();
+  currentPlayer = players[0];
+  modal.style.display = "none";
+});
